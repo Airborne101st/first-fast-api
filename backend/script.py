@@ -2,6 +2,10 @@ import pymongo
 import json
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 client = pymongo.MongoClient(os.environ.get('MONGO_DB_SERVICE'))
 
 db = client['courses_db']

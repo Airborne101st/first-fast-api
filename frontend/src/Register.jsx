@@ -14,6 +14,9 @@ const apiClient = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_SERVICE,
 });
 
+console.log("|||||||||||||||||||||||||||||||||||")
+console.log(import.meta.env.VITE_BACKEND_SERVICE)
+
 const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -30,14 +33,21 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      response = await apiClient.post("/register", formData);
-      setMessage({ type: "success", text: response.data.msg });
-    } catch (error) {
+  e.preventDefault();
+  try {
+    const response = await apiClient.post("/register", formData); // Declare response
+    console.log(response);
+    console.log("SUCCESS");
+    setMessage({ type: "success", text: response.data.msg }); // Ensure correct data access
+  } catch (error) {
+    console.error("ERROR", error); // Log the actual error
+    if (error.response && error.response.data && error.response.data.detail) {
       setMessage({ type: "danger", text: error.response.data.detail });
+    } else {
+      setMessage({ type: "danger", text: "An error occurred" });
     }
-  };
+  }
+};
 
   return (
     <Container className="mt-5">

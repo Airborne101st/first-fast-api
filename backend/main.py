@@ -21,7 +21,7 @@ app = FastAPI()
 load_dotenv()
 
 # Serve the React static files
-app.mount("/", StaticFiles(directory="frontend/react-front/dist", html=True), name="static")
+# app.mount("/", StaticFiles(directory="frontend/react-front/dist", html=True), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -31,8 +31,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+print("MONGO ", os.environ.get('MONGO_DB_SERVICE'))
 client = MongoClient(os.environ.get('MONGO_DB_SERVICE'))
+print("CONNECTED WITH MONGO ", client)
 db = client['courses_db']
+print("DB ", db)
 
 print("SERVICE", os.environ.get('FRONTEND_SERVICE'))
 print("START")
@@ -51,7 +54,11 @@ class UserLogin(BaseModel):
 
 @app.post('/register')
 async def register(user: UserRegister):
-    existing_user = await users_collection.find_one({'username': user.username})
+    print(users_collection)
+    try:
+        existing_user = await users_collection.find_one({'username': user.username})
+    except Exception as exc:
+        print("EXC ", exc)
     if existing_user:
         raise HTTPException(status_code=400, detail='Username already taken')
 
