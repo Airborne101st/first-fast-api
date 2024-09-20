@@ -13,7 +13,7 @@ jobs:
       mongodb:
         image: mongo
         ports:
-          - 27017:27017
+          - 27018:27017
         env:
           MONGO_INITDB_ROOT_USERNAME: admin
           MONGO_INITDB_ROOT_PASSWORD: admin123
@@ -56,7 +56,7 @@ jobs:
     # Wait for MongoDB to be ready
     - name: Wait for MongoDB to be ready
       run: |
-        until curl http://localhost:27017; do echo waiting for mongodb; sleep 5; done
+        until curl http://localhost:27018; do echo waiting for mongodb; sleep 5; done
 
     # Verify Backend and Frontend are running
     - name: Verify Backend
